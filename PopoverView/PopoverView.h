@@ -32,6 +32,9 @@ typedef NS_ENUM(NSUInteger, PopoverViewArrowStyle) {
  */
 @property (nonatomic, assign) PopoverViewArrowStyle arrowStyle;
 
+
+@property (nonatomic, assign) CGFloat preferredHeight;
+
 + (instancetype)popoverView;
 
 /**
@@ -49,5 +52,7 @@ typedef NS_ENUM(NSUInteger, PopoverViewArrowStyle) {
  @param actions 动作对象集合<PopoverAction>
  */
 - (void)showToPoint:(CGPoint)toPoint withActions:(NSArray<PopoverAction *> *)actions;
+
+- (void)hide;
 
 @end

@@ -420,6 +420,8 @@ float PopoverViewDegreesToRadians(float angle)
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (_preferredHeight > 0)
+        return _preferredHeight;
     return kPopoverViewCellHeight;
 }
 

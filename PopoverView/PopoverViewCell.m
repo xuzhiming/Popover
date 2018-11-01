@@ -31,7 +31,7 @@ float const PopoverViewCellTitleLeftEdge = 8.f; ///< 标题左边边距
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
     [super setHighlighted:highlighted animated:animated];
     if (highlighted) {
-        self.backgroundColor = _style == PopoverViewStyleDefault ? [UIColor colorWithRed:0.90 green:0.90 blue:0.90 alpha:1.00] : [UIColor colorWithRed:0.23 green:0.23 blue:0.23 alpha:1.00];
+        self.backgroundColor = _style == PopoverViewStyleDefault ? [UIColor colorWithRed:0.90 green:0.90 blue:0.90 alpha:1.00] : [UIColor colorWithRed:0 green:0 blue:0 alpha:0.9];
     } else {
         [UIView animateWithDuration:0.3f animations:^{
             self.backgroundColor = [UIColor clearColor];
@@ -58,6 +58,7 @@ float const PopoverViewCellTitleLeftEdge = 8.f; ///< 标题左边边距
     _button.userInteractionEnabled = NO; // has no use for UserInteraction.
     _button.translatesAutoresizingMaskIntoConstraints = NO;
     _button.titleLabel.font = [self.class titleFont];
+    _button.titleLabel.numberOfLines = 0;
     _button.backgroundColor = self.contentView.backgroundColor;
     _button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [_button setTitleColor:UIColor.blackColor forState:UIControlStateNormal];
@@ -79,7 +80,7 @@ float const PopoverViewCellTitleLeftEdge = 8.f; ///< 标题左边边距
 #pragma mark - Public
 /*! @brief 标题字体 */
 + (UIFont *)titleFont {
-    return [UIFont systemFontOfSize:15.f];
+    return [UIFont systemFontOfSize:14.f];
 }
 
 /*! @brief 底部线条颜色 */
