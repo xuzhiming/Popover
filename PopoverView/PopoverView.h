@@ -11,6 +11,8 @@ typedef NS_ENUM(NSUInteger, PopoverViewArrowStyle) {
 
 @interface PopoverView : UIView
 
+@property (nonatomic, weak) UIView *keyWindow;
+
 /**
  是否开启点击外部隐藏弹窗, 默认为YES.
  */
@@ -36,6 +38,8 @@ typedef NS_ENUM(NSUInteger, PopoverViewArrowStyle) {
 @property (nonatomic, assign) CGFloat preferredHeight;
 
 + (instancetype)popoverView;
+
+-(instancetype)initWithKeyWindow:(UIView *)keyWindow;
 
 /**
  指向指定的View来显示弹窗

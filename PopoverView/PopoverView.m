@@ -17,7 +17,7 @@ float PopoverViewDegreesToRadians(float angle)
 @interface PopoverView () <UITableViewDelegate, UITableViewDataSource>
 
 #pragma mark - UI
-@property (nonatomic, weak) UIWindow *keyWindow;                ///< 当前窗口
+//@property (nonatomic, weak) UIWindow *keyWindow;                ///< 当前窗口
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UIView *shadeView;                ///< 遮罩层
 @property (nonatomic, weak) CAShapeLayer *borderLayer;          ///< 边框Layer
@@ -54,6 +54,9 @@ float PopoverViewDegreesToRadians(float angle)
 {
     _hideAfterTouchOutside = hideAfterTouchOutside;
     _tapGesture.enabled = _hideAfterTouchOutside;
+    if (!hideAfterTouchOutside) {
+        _shadeView.userInteractionEnabled = NO;
+    }
 }
 
 - (void)setShowShade:(BOOL)showShade
@@ -98,7 +101,9 @@ float PopoverViewDegreesToRadians(float angle)
     self.backgroundColor = [UIColor whiteColor];
     
     // keyWindow
-    _keyWindow = [UIApplication sharedApplication].keyWindow;
+    if (!_keyWindow) {
+        _keyWindow = [UIApplication sharedApplication].keyWindow;
+    }
     _windowWidth = CGRectGetWidth(_keyWindow.bounds);
     _windowHeight = CGRectGetHeight(_keyWindow.bounds);
     
@@ -369,6 +374,14 @@ float PopoverViewDegreesToRadians(float angle)
     return [[self alloc] init];
 }
 
+-(instancetype)initWithKeyWindow:(UIView *)keyWindow{
+    if (self = [super init]) {
+        _keyWindow = keyWindow;
+        [self initialize];
+    }
+    return self;
+}
+
 - (void)showToView:(UIView *)pointView withActions:(NSArray<PopoverAction *> *)actions
 {
     // 判断 pointView 是偏上还是偏下
@@ -447,6 +460,11 @@ float PopoverViewDegreesToRadians(float angle)
         [_shadeView removeFromSuperview];
         [self removeFromSuperview];
     }];
+}
+
+-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    [super touchesBegan:touches withEvent:event];
+    [self hide];
 }
 
 @end
