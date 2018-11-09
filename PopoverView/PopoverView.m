@@ -2,6 +2,7 @@
 
 #import "PopoverView.h"
 #import "PopoverViewCell.h"
+#import "PopShadowView.h"
 
 static CGFloat const kPopoverViewMargin = 8.f;        ///< 边距
 static CGFloat const kPopoverViewCellHeight = 40.f;   ///< cell指定高度
@@ -19,7 +20,7 @@ float PopoverViewDegreesToRadians(float angle)
 #pragma mark - UI
 //@property (nonatomic, weak) UIWindow *keyWindow;                ///< 当前窗口
 @property (nonatomic, strong) UITableView *tableView;
-@property (nonatomic, strong) UIView *shadeView;                ///< 遮罩层
+@property (nonatomic, strong) PopShadowView *shadeView;                ///< 遮罩层
 @property (nonatomic, weak) CAShapeLayer *borderLayer;          ///< 边框Layer
 @property (nonatomic, weak) UITapGestureRecognizer *tapGesture; ///< 点击背景阴影的手势
 
@@ -108,11 +109,16 @@ float PopoverViewDegreesToRadians(float angle)
     _windowHeight = CGRectGetHeight(_keyWindow.bounds);
     
     // shadeView
-    _shadeView = [[UIView alloc] initWithFrame:_keyWindow.bounds];
+    _shadeView = [[PopShadowView alloc] initWithFrame:_keyWindow.bounds];
+    __weak PopoverView *ws = self;
+    [_shadeView setOnTouchShadow:^{
+        [ws hide];
+    }];
     [self setShowShade:NO];
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hide)];
-    [_shadeView addGestureRecognizer:tapGesture];
-    _tapGesture = tapGesture;
+//    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hide)];
+//    [_shadeView addGestureRecognizer:tapGesture];
+//    _tapGesture = tapGesture;
+    
     
     // tableView
     _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
@@ -460,11 +466,6 @@ float PopoverViewDegreesToRadians(float angle)
         [_shadeView removeFromSuperview];
         [self removeFromSuperview];
     }];
-}
-
--(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-    [super touchesBegan:touches withEvent:event];
-    [self hide];
 }
 
 @end
