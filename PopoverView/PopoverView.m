@@ -382,6 +382,31 @@ float PopoverViewDegreesToRadians(float angle)
     return self;
 }
 
+- (void)showToView:(UIView *)pointView isUpwardArrow:(BOOL)isUpward withActions:(NSArray<PopoverAction *> *)actions {
+    // 判断 pointView 是偏上还是偏下
+    CGRect pointViewRect = [pointView.superview convertRect:pointView.frame toView:_keyWindow];
+    CGFloat pointViewUpLength = CGRectGetMinY(pointViewRect);
+    // 弹窗箭头指向的点
+    CGPoint toPoint = CGPointMake(CGRectGetMidX(pointViewRect), 0);
+    
+    if (isUpward) {
+        toPoint.y = CGRectGetMaxY(pointViewRect) + 5;
+    } else {
+        toPoint.y = pointViewUpLength - 5;
+    }
+    
+    // 箭头指向方向
+    _isUpward = isUpward;
+    
+    if (!actions) {
+        _actions = @[];
+    } else {
+        _actions = [actions copy];
+    }
+    
+    [self showToPoint:toPoint];
+}
+
 - (void)showToView:(UIView *)pointView withActions:(NSArray<PopoverAction *> *)actions
 {
     // 判断 pointView 是偏上还是偏下

@@ -49,6 +49,16 @@ typedef NS_ENUM(NSUInteger, PopoverViewArrowStyle) {
  */
 - (void)showToView:(UIView *)pointView withActions:(NSArray<PopoverAction *> *)actions;
 
+
+/**
+ 指向指定的View来显示弹窗
+
+ @param pointView 箭头指向的View
+ @param isUpward 强制设置箭头位置 true:向上，false:向下
+ @param actions 动作对象集合<PopoverAction>
+ */
+- (void)showToView:(UIView *)pointView isUpwardArrow:(BOOL)isUpward withActions:(NSArray<PopoverAction *> *)actions;
+
 /**
  指向指定的点来显示弹窗
 
