@@ -60,7 +60,7 @@ float const PopoverViewCellTitleLeftEdge = 8.f; ///< 标题左边边距
     _button.titleLabel.font = [self.class titleFont];
     _button.titleLabel.numberOfLines = 0;
     _button.backgroundColor = self.contentView.backgroundColor;
-    _button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    _button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
     [_button setTitleColor:UIColor.blackColor forState:UIControlStateNormal];
     [self.contentView addSubview:_button];
     // Constraint

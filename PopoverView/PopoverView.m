@@ -311,6 +311,9 @@ float PopoverViewDegreesToRadians(float angle)
 /*! @brief 计算最大宽度 */
 - (CGFloat)calculateMaxWidth
 {
+    if (_preferredWidth > 0) {
+        return _preferredWidth;
+    }
     CGFloat maxWidth = 0.f, titleLeftEdge = 0.f, imageWidth = 0.f, imageMaxHeight = kPopoverViewCellHeight - PopoverViewCellVerticalMargin*2;
     CGSize imageSize = CGSizeZero;
     UIFont *titleFont = [PopoverViewCell titleFont];
