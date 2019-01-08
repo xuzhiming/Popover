@@ -159,6 +159,9 @@ float PopoverViewDegreesToRadians(float angle)
         toPoint.x = _windowWidth - minHorizontalEdge;
     }
     
+    toPoint.x += _preferredXOffset;
+    toPoint.y += _preferredYOffset;
+    
     // 遮罩层
     _shadeView.alpha = 0.f;
     [_keyWindow addSubview:_shadeView];

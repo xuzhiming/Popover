@@ -39,6 +39,10 @@ typedef NS_ENUM(NSUInteger, PopoverViewArrowStyle) {
 
 @property (nonatomic, assign) CGFloat preferredWidth;
 
+@property (nonatomic, assign) CGFloat preferredYOffset;
+
+@property (nonatomic, assign) CGFloat preferredXOffset;
+
 + (instancetype)popoverView;
 
 -(instancetype)initWithKeyWindow:(UIView *)keyWindow;
