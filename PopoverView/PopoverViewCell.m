@@ -1,6 +1,6 @@
 
-
 #import "PopoverViewCell.h"
+#import <Masonry/Masonry.h>
 
 // extern
 float const PopoverViewCellHorizontalMargin = 15.f; ///< 水平边距
@@ -24,7 +24,7 @@ float const PopoverViewCellTitleLeftEdge = 8.f; ///< 标题左边边距
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     // initialize
     [self initialize];
-    
+
     return self;
 }
 
@@ -56,16 +56,20 @@ float const PopoverViewCellTitleLeftEdge = 8.f; ///< 标题左边边距
     // UI
     _button = [UIButton buttonWithType:UIButtonTypeCustom];
     _button.userInteractionEnabled = NO; // has no use for UserInteraction.
-    _button.translatesAutoresizingMaskIntoConstraints = NO;
+//    _button.translatesAutoresizingMaskIntoConstraints = NO;
     _button.titleLabel.font = [self.class titleFont];
     _button.titleLabel.numberOfLines = 0;
     _button.backgroundColor = self.contentView.backgroundColor;
-    _button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+//    _button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
     [_button setTitleColor:UIColor.blackColor forState:UIControlStateNormal];
     [self.contentView addSubview:_button];
+    [_button mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.contentView);
+    }];
+
     // Constraint
-    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-margin-[_button]-margin-|" options:kNilOptions metrics:@{@"margin" : @(PopoverViewCellHorizontalMargin)} views:NSDictionaryOfVariableBindings(_button)]];
-    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-margin-[_button]-margin-|" options:kNilOptions metrics:@{@"margin" : @(PopoverViewCellVerticalMargin)} views:NSDictionaryOfVariableBindings(_button)]];
+//    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-margin-[_button]-margin-|" options:kNilOptions metrics:@{ @"margin": @(PopoverViewCellHorizontalMargin) } views:NSDictionaryOfVariableBindings(_button)]];
+//    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-margin-[_button]-margin-|" options:kNilOptions metrics:@{ @"margin": @(PopoverViewCellVerticalMargin) } views:NSDictionaryOfVariableBindings(_button)]];
     // 底部线条
     UIView *bottomLine = [[UIView alloc] init];
     bottomLine.backgroundColor = [UIColor colorWithRed:0.75 green:0.75 blue:0.75 alpha:1.00];
@@ -73,8 +77,12 @@ float const PopoverViewCellTitleLeftEdge = 8.f; ///< 标题左边边距
     [self.contentView addSubview:bottomLine];
     _bottomLine = bottomLine;
     // Constraint
-    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[bottomLine]|" options:kNilOptions metrics:nil views:NSDictionaryOfVariableBindings(bottomLine)]];
-    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[bottomLine(lineHeight)]|" options:kNilOptions metrics:@{@"lineHeight" : @(1/[UIScreen mainScreen].scale)} views:NSDictionaryOfVariableBindings(bottomLine)]];
+    [bottomLine mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.bottom.equalTo(self.contentView);
+        make.height.mas_equalTo(1.f);
+    }];
+//    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[bottomLine]|" options:kNilOptions metrics:nil views:NSDictionaryOfVariableBindings(bottomLine)]];
+//    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[bottomLine(lineHeight)]|" options:kNilOptions metrics:@{ @"lineHeight": @(1 / [UIScreen mainScreen].scale) } views:NSDictionaryOfVariableBindings(bottomLine)]];
 }
 
 #pragma mark - Public
@@ -91,6 +99,22 @@ float const PopoverViewCellTitleLeftEdge = 8.f; ///< 标题左边边距
 - (void)setAction:(PopoverAction *)action {
     [_button setImage:action.image forState:UIControlStateNormal];
     [_button setTitle:action.title forState:UIControlStateNormal];
+    if (action.image) {
+//        [_button setImageEdgeInsets:UIEdgeInsetsMake(0, PopoverViewCellTitleLeftEdge, 0, 0)];
+        [_button.imageView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.left.offset(PopoverViewCellHorizontalMargin).priorityHigh();
+            make.right.equalTo(self.button.titleLabel.mas_left).offset(-PopoverViewCellTitleLeftEdge);
+            make.centerY.equalTo(self.button);
+            make.size.mas_equalTo(action.image.size);
+        }];
+
+    } else {
+        [_button.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.left.offset(PopoverViewCellTitleLeftEdge);
+            make.center.equalTo(self.button);
+        }];
+    }
+
     _button.titleEdgeInsets = action.image ? UIEdgeInsetsMake(0, PopoverViewCellTitleLeftEdge, 0, -PopoverViewCellTitleLeftEdge) : UIEdgeInsetsZero;
 }
 

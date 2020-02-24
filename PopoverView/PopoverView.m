@@ -140,15 +140,18 @@ float PopoverViewDegreesToRadians(float angle)
 - (void)showToPoint:(CGPoint)toPoint
 {
     // 截取弹窗时相关数据
-    CGFloat arrowWidth = 28;
+    CGFloat arrowWidth = 16;
     CGFloat cornerRadius = 6.f;
     CGFloat arrowCornerRadius = 2.5f;
     CGFloat arrowBottomCornerRadius = 4.f;
     
     // 如果是菱角箭头的话, 箭头宽度需要小点.
     if (_arrowStyle == PopoverViewArrowStyleTriangle) {
-        arrowWidth = 22.0;
+        arrowWidth = 10.0;
     }
+    
+    toPoint.x += _preferredXOffset;
+    toPoint.y += _preferredYOffset;
     
     // 如果箭头指向的点过于偏左或者过于偏右则需要重新调整箭头 x 轴的坐标
     CGFloat minHorizontalEdge = kPopoverViewMargin + cornerRadius + arrowWidth/2 + 2;
@@ -158,9 +161,6 @@ float PopoverViewDegreesToRadians(float angle)
     if (_windowWidth - toPoint.x < minHorizontalEdge) {
         toPoint.x = _windowWidth - minHorizontalEdge;
     }
-    
-    toPoint.x += _preferredXOffset;
-    toPoint.y += _preferredYOffset;
     
     // 遮罩层
     _shadeView.alpha = 0.f;
@@ -339,6 +339,7 @@ float PopoverViewDegreesToRadians(float angle)
                 
                 imageWidth = imageSize.width;
             }
+            imageWidth += PopoverViewCellTitleLeftEdge;
         }
         
         CGFloat titleWidth;

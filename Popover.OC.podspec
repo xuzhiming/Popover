@@ -12,4 +12,6 @@ Pod::Spec.new do |s|
 	s.requires_arc = true
 	s.platform 		 = :ios, "6.0"
 	s.source_files = "PopoverView/*", "*.{h,m}"
+  s.dependency "Masonry"
+
 end
