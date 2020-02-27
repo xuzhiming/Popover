@@ -6,7 +6,7 @@
 
 static CGFloat const kPopoverViewMargin = 8.f;        ///< 边距
 static CGFloat const kPopoverViewCellHeight = 40.f;   ///< cell指定高度
-static CGFloat const kPopoverViewArrowHeight = 13.f;  ///< 箭头高度
+static CGFloat const kPopoverViewArrowHeight = 6.f;  ///< 箭头高度
 
 static NSString *kPopoverCellReuseId = @"_PopoverCellReuseId";
 
@@ -147,7 +147,7 @@ float PopoverViewDegreesToRadians(float angle)
     
     // 如果是菱角箭头的话, 箭头宽度需要小点.
     if (_arrowStyle == PopoverViewArrowStyleTriangle) {
-        arrowWidth = 10.0;
+        arrowWidth = 15.0;
     }
     
     toPoint.x += _preferredXOffset;

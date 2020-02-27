@@ -3,7 +3,7 @@
 #import <Masonry/Masonry.h>
 
 // extern
-float const PopoverViewCellHorizontalMargin = 15.f; ///< 水平边距
+float const PopoverViewCellHorizontalMargin = 28.f; ///< 水平边距
 float const PopoverViewCellVerticalMargin = 3.f; ///< 垂直边距
 float const PopoverViewCellTitleLeftEdge = 8.f; ///< 标题左边边距
 
@@ -60,12 +60,21 @@ float const PopoverViewCellTitleLeftEdge = 8.f; ///< 标题左边边距
     _button.titleLabel.font = [self.class titleFont];
     _button.titleLabel.numberOfLines = 0;
     _button.backgroundColor = self.contentView.backgroundColor;
-//    _button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+    _button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    [_button setContentEdgeInsets:UIEdgeInsetsMake(0, 17, 0, 0)];
+    [_button.imageView setContentMode:UIViewContentModeScaleAspectFit];
     [_button setTitleColor:UIColor.blackColor forState:UIControlStateNormal];
     [self.contentView addSubview:_button];
     [_button mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.contentView);
     }];
+    
+    [_button.imageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.button.titleLabel.mas_left).offset(-17);
+        make.centerY.equalTo(self.button);
+        make.size.mas_equalTo(CGSizeMake(20, 20));
+    }];
+
 
     // Constraint
 //    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-margin-[_button]-margin-|" options:kNilOptions metrics:@{ @"margin": @(PopoverViewCellHorizontalMargin) } views:NSDictionaryOfVariableBindings(_button)]];
@@ -78,8 +87,9 @@ float const PopoverViewCellTitleLeftEdge = 8.f; ///< 标题左边边距
     _bottomLine = bottomLine;
     // Constraint
     [bottomLine mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.bottom.equalTo(self.contentView);
-        make.height.mas_equalTo(1.f);
+        make.right.bottom.equalTo(self.contentView);
+        make.left.offset(0);
+        make.height.mas_equalTo(.5f);
     }];
 //    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[bottomLine]|" options:kNilOptions metrics:nil views:NSDictionaryOfVariableBindings(bottomLine)]];
 //    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[bottomLine(lineHeight)]|" options:kNilOptions metrics:@{ @"lineHeight": @(1 / [UIScreen mainScreen].scale) } views:NSDictionaryOfVariableBindings(bottomLine)]];
@@ -88,7 +98,11 @@ float const PopoverViewCellTitleLeftEdge = 8.f; ///< 标题左边边距
 #pragma mark - Public
 /*! @brief 标题字体 */
 + (UIFont *)titleFont {
-    return [UIFont systemFontOfSize:14.f];
+    if (@available(iOS 8.2, *)) {
+        return [UIFont systemFontOfSize:16 weight:UIFontWeightRegular];
+    } else {
+        return [UIFont systemFontOfSize:16];
+    }
 }
 
 /*! @brief 底部线条颜色 */
@@ -101,17 +115,22 @@ float const PopoverViewCellTitleLeftEdge = 8.f; ///< 标题左边边距
     [_button setTitle:action.title forState:UIControlStateNormal];
     if (action.image) {
 //        [_button setImageEdgeInsets:UIEdgeInsetsMake(0, PopoverViewCellTitleLeftEdge, 0, 0)];
-        [_button.imageView mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.left.offset(PopoverViewCellHorizontalMargin).priorityHigh();
-            make.right.equalTo(self.button.titleLabel.mas_left).offset(-PopoverViewCellTitleLeftEdge);
+        [_button.titleLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(self.button);
-            make.size.mas_equalTo(action.image.size);
+            make.left.offset(54);
         }];
-
+        
+        [_bottomLine mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.left.offset(54);
+        }];
     } else {
-        [_button.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        [_button.titleLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
 //            make.left.offset(PopoverViewCellTitleLeftEdge);
             make.center.equalTo(self.button);
+        }];
+
+        [_bottomLine mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.left.offset(0);
         }];
     }
 
